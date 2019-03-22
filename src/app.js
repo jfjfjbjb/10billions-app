@@ -11,13 +11,6 @@ var users = require('./routes/users');
 
 var app = express();
 
-// https
-var https = require('https');
-var privateKey  = fs.readFileSync(path.join(__dirname,"../cert/1965733_10billions.com.cn.key"), 'utf8');
-var certificate = fs.readFileSync(path.join(__dirname,"../cert/1965733_10billions.com.cn.pem"), 'utf8');
-var options={key:privateKey, cert:certificate};
-var server = https.createServer(options, app);
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -80,12 +73,18 @@ app.set('port', process.env.PORT || 3001); // 设定监听端口
 // module.exports = app; 这是 4.x 默认的配置，分离了 app 模块,将它注释即可，上线时可以重新改回来
 
 //启动监听
-if(process.env.mode == 'prod') {
-    server.listen(app.get('port'));
-} else {
+if(process.env.mode == 'dev') {
     var server = app.listen(app.get('port'), function() {
         debug('Express server listening on port ' + server.address().port);
     });
+} else {
+    // https
+    var https = require('https');
+    var privateKey  = fs.readFileSync(path.join(__dirname,"../cert/1965733_10billions.com.cn.key"), 'utf8');
+    var certificate = fs.readFileSync(path.join(__dirname,"../cert/1965733_10billions.com.cn.pem"), 'utf8');
+    var options={key:privateKey, cert:certificate};
+    var server = https.createServer(options, app);
+    server.listen(app.get('port'));
 }
 
 module.exports = app;
