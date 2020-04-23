@@ -10,7 +10,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
-require('./db');
+// require('./db');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -81,8 +81,8 @@ if(process.env.mode == 'dev') {
 } else {
     // https
     var https = require('https');
-    var privateKey  = fs.readFileSync(path.join(__dirname,"../cert/1965733_10billions.com.cn.key"), 'utf8');
-    var certificate = fs.readFileSync(path.join(__dirname,"../cert/1965733_10billions.com.cn.pem"), 'utf8');
+    var privateKey  = fs.readFileSync(path.join(__dirname,"../cert/3808142_www.10billions.com.cn.key"), 'utf8');
+    var certificate = fs.readFileSync(path.join(__dirname,"../cert/3808142_www.10billions.com.cn.pem"), 'utf8');
     var options={key:privateKey, cert:certificate};
     var server = https.createServer(options, app);
     server.listen(app.get('port'));
